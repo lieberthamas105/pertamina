@@ -7,37 +7,48 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div id="app" class="w-[1000px] bg-white p-6 shadow-md border rounded">
-    <h2 class="text-lg font-semibold mb-4">List Karyawan</h2>
+  <div id="app" class="w-[900px] bg-white border shadow-md p-6">
+    <h2 class="text-xl font-semibold mb-4 border-b pb-2 text-center">Master Karyawan</h2>
 
-    <div class="mb-4">
-      <a href="form-karyawan.html" class="border border-black px-4 py-2">Tambah</a>
+    <div class="mb-4 flex justify-between items-center">
+      <h3 class="font-medium">List Karyawan</h3>
+      <a href="form-karyawan.html" class="bg-black text-white px-4 py-1 rounded">Tambah</a>
     </div>
 
     <div class="overflow-auto">
-      <table class="w-full table-fixed border border-gray-400 text-sm">
-        <thead class="bg-gray-200 text-left">
+      <table class="table-auto w-full border border-collapse border-gray-300">
+        <thead class="bg-gray-200">
           <tr>
-            <th class="border border-gray-400 px-2 py-1 w-[40px]">No</th>
-            <th class="border border-gray-400 px-2 py-1">Nama</th>
-            <th class="border border-gray-400 px-2 py-1">Tanggal Lahir</th>
-            <th class="border border-gray-400 px-2 py-1">Jabatan</th>
-            <th class="border border-gray-400 px-2 py-1">NIP</th>
-            <th class="border border-gray-400 px-2 py-1">Jenis Kelamin</th>
-            <th class="border border-gray-400 px-2 py-1 text-center w-[80px]">Aksi</th>
+            <th class="border px-3 py-2 text-left">No</th>
+            <th class="border px-3 py-2 text-left">Nama</th>
+            <th class="border px-3 py-2 text-left">Tanggal Lahir</th>
+            <th class="border px-3 py-2 text-left">Jabatan</th>
+            <th class="border px-3 py-2 text-left">NIP</th>
+            <th class="border px-3 py-2 text-left">Jenis Kelamin</th>
+            <th class="border px-3 py-2 text-left">Aksi</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(karyawan, index) in karyawanList" :key="karyawan.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
-            <td class="border border-gray-400 px-2 py-1 text-center">{{ index + 1 }}</td>
-            <td class="border border-gray-400 px-2 py-1">{{ karyawan.nama }}</td>
-            <td class="border border-gray-400 px-2 py-1">{{ karyawan.tanggal_lahir }}</td>
-            <td class="border border-gray-400 px-2 py-1">{{ karyawan.jabatan }}</td>
-            <td class="border border-gray-400 px-2 py-1">{{ karyawan.nip }}</td>
-            <td class="border border-gray-400 px-2 py-1">{{ karyawan.jenis_kelamin }}</td>
-            <td class="border border-gray-400 px-2 py-1 text-center">
-              <button class="mx-1" title="Edit">✏️</button>
-              <button class="mx-1" title="Delete" @click="hapusData(index)">🗑️</button>
+          <tr v-for="(karyawan, index) in dataKaryawan" :key="karyawan.id" class="hover:bg-gray-50">
+            <td class="border px-3 py-2">{{ index + 1 }}</td>
+            <td class="border px-3 py-2">{{ karyawan.nama }}</td>
+            <td class="border px-3 py-2">{{ formatTanggal(karyawan.tanggal_lahir) }}</td>
+            <td class="border px-3 py-2">{{ karyawan.jabatan }}</td>
+            <td class="border px-3 py-2">{{ karyawan.nip }}</td>
+            <td class="border px-3 py-2">{{ karyawan.jenis_kelamin }}</td>
+            <td class="border px-3 py-2 space-x-2">
+              <button @click="editKaryawan(karyawan)" class="text-blue-600 hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536M4 20h4l10.293-10.293a1 1 0 00-1.414-1.414L7 18.586V20z"/>
+                </svg>
+              </button>
+              <button @click="hapusKaryawan(karyawan.id)" class="text-red-600 hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
             </td>
           </tr>
         </tbody>

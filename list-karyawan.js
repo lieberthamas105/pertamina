@@ -1,45 +1,49 @@
 const { createApp } = Vue;
 
-createApp({
-  data() {
-    return {
-      karyawanList: [], // akan diisi dari fetch
-    };
-  },
-  mounted() {
-    this.ambilDataKaryawan();
-  },
-  methods: {
-    async ambilDataKaryawan() {
-      try {
-        const response = await fetch(`http://localhost:8080/api/karyawan`);
-        if (!response.ok) throw new Error("Gagal mengambil data");
-        const data = await response.json();
-        this.karyawanList = data;
-      } catch (error) {
-        console.error("Error saat fetch data:", error);
-        alert("Gagal memuat data karyawan.");
+    createApp({
+      data() {
+        return {
+          dataKaryawan: []
+        };
+      },
+      mounted() {
+        this.ambilData();
+      },
+      methods: {
+        async ambilData() {
+          try {
+            const response = await fetch('http://localhost:8080/api/karyawan');
+            if (!response.ok) throw new Error('Gagal mengambil data');
+            const data = await response.json();
+            this.dataKaryawan = data;
+          } catch (error) {
+            console.error(error);
+            alert('Gagal memuat data dari server.');
+          }
+        },
+        formatTanggal(tanggal) {
+          const opsi = { year: 'numeric', month: 'long', day: 'numeric' };
+          return new Date(tanggal).toLocaleDateString('id-ID', opsi);
+        },
+        editKaryawan(karyawan) {
+          // redirect + kirim data via query atau localStorage
+          localStorage.setItem('dataEdit', JSON.stringify(karyawan));
+          window.location.href = 'form-karyawan.html';
+        },
+        async hapusKaryawan(id) {
+          if (confirm('Yakin ingin menghapus data ini?')) {
+            try {
+              const res = await fetch(`http://localhost:8080/api/karyawan/${id}`, {
+                method: 'DELETE'
+              });
+              if (!res.ok) throw new Error('Gagal menghapus');
+              alert('Data berhasil dihapus');
+              this.ambilData();
+            } catch (err) {
+              console.error(err);
+              alert('Terjadi kesalahan saat menghapus data');
+            }
+          }
+        }
       }
-    },
-    async hapusData(index) {
-      const yakin = confirm("Yakin ingin menghapus data ini?");
-      if (!yakin) return;
-
-      const karyawan = this.karyawanList[index];
-
-      try {
-        const response = await fetch(`http://localhost:8080/api/karyawan/${karyawan.id}`, {
-          method: 'DELETE'
-        });
-
-        if (!response.ok) throw new Error('Gagal menghapus data');
-
-        this.karyawanList.splice(index, 1); // hapus dari tampilan
-        alert("Data berhasil dihapus.");
-      } catch (error) {
-        alert("Gagal menghapus data.");
-        console.error(error);
-      }
-    }
-  }
-}).mount('#app');
+    }).mount('#app');

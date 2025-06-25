@@ -1,0 +1,1 @@
+INSERT INTO jabatan (nama) VALUES ('Manager'), ('Supervisor'), ('Staff'), ('Helpdesk'), ('Tester'), ('BPS'), ('Programmer');
