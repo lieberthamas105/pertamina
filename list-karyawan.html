@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>List Karyawan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div id="app" class="w-[1000px] bg-white p-6 shadow-md border rounded">
+    <h2 class="text-lg font-semibold mb-4">List Karyawan</h2>
+
+    <div class="mb-4">
+      <a href="form-karyawan.html" class="border border-black px-4 py-2">Tambah</a>
+    </div>
+
+    <div class="overflow-auto">
+      <table class="w-full table-fixed border border-gray-400 text-sm">
+        <thead class="bg-gray-200 text-left">
+          <tr>
+            <th class="border border-gray-400 px-2 py-1 w-[40px]">No</th>
+            <th class="border border-gray-400 px-2 py-1">Nama</th>
+            <th class="border border-gray-400 px-2 py-1">Tanggal Lahir</th>
+            <th class="border border-gray-400 px-2 py-1">Jabatan</th>
+            <th class="border border-gray-400 px-2 py-1">NIP</th>
+            <th class="border border-gray-400 px-2 py-1">Jenis Kelamin</th>
+            <th class="border border-gray-400 px-2 py-1 text-center w-[80px]">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(karyawan, index) in karyawanList" :key="karyawan.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+            <td class="border border-gray-400 px-2 py-1 text-center">{{ index + 1 }}</td>
+            <td class="border border-gray-400 px-2 py-1">{{ karyawan.nama }}</td>
+            <td class="border border-gray-400 px-2 py-1">{{ karyawan.tanggal_lahir }}</td>
+            <td class="border border-gray-400 px-2 py-1">{{ karyawan.jabatan }}</td>
+            <td class="border border-gray-400 px-2 py-1">{{ karyawan.nip }}</td>
+            <td class="border border-gray-400 px-2 py-1">{{ karyawan.jenis_kelamin }}</td>
+            <td class="border border-gray-400 px-2 py-1 text-center">
+              <button class="mx-1" title="Edit">✏️</button>
+              <button class="mx-1" title="Delete" @click="hapusData(index)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="list-karyawan.js"></script>
+   
+</body>
+</html>
